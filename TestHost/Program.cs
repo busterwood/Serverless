@@ -12,11 +12,12 @@ namespace TestHost
 {
     class Program
     {
+        [LoaderOptimization(LoaderOptimization.MultiDomain)]
         static void Main(string[] args)
         {
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
             var runner = new AppDomainJobRunner();
-            var jobs = Enumerable.Range(0, 1).Select(i => RunJobAsync(runner)).ToArray();
+            var jobs = Enumerable.Range(0, 100).Select(i => RunJobAsync(runner)).ToArray();
 
             Task.WaitAll(jobs);
 
