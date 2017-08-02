@@ -60,11 +60,11 @@ namespace BusterWood.CommandLine
 
             var pipeOut = argList.StringArg(PipeOutArg);
             if (!string.IsNullOrWhiteSpace(pipeOut))
-                Out = new StreamWriter(new AnonymousPipeClientStream(PipeDirection.Out, pipeOut));
+                Out = new StreamWriter(new AnonymousPipeClientStream(PipeDirection.Out, pipeOut)) { AutoFlush = true };
 
             var pipeLog = argList.StringArg(PipeLogArg);
             if (!string.IsNullOrWhiteSpace(pipeLog))
-                Log = new StreamWriter(new AnonymousPipeClientStream(PipeDirection.Out, pipeOut));
+                Log = new StreamWriter(new AnonymousPipeClientStream(PipeDirection.Out, pipeOut)) { AutoFlush = true };
 
             return argList;
         }
