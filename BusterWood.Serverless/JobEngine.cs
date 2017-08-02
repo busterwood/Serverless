@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace BusterWood.Serverless
 {
-    abstract class EssentialEngine
+    abstract class EssentialJobEngine
     {
         private Task jobRunner;
         private CancellationTokenSource cancelSource;
@@ -13,7 +13,7 @@ namespace BusterWood.Serverless
         {
             CleanUpPreviouslyClaimedJobs();
             cancelSource = new CancellationTokenSource();
-            jobRunner = Task.Factory.StartNew(Run, cancelSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Current);
+            jobRunner = Run();
         }
 
         /// <summary>
@@ -36,10 +36,12 @@ namespace BusterWood.Serverless
         /// </summary>
         protected virtual async Task Run()
         {
-            var token = cancelSource.Token;
-            while (!token.IsCancellationRequested)
+            await Task.Yield();  // force this method to run asynchronously
+
+            var cancel = cancelSource.Token;
+            while (!cancel.IsCancellationRequested)
             {
-                var job = await ClaimJob(token);
+                var job = await ClaimJob(cancel);
                 if (job == null)
                     break; // we have been cancelled
                 var dontWait = TryToRunJob(job);
@@ -80,7 +82,7 @@ namespace BusterWood.Serverless
         protected abstract void JobFailed(JobData job, Exception ex);
     }
 
-    class JobEngine : EssentialEngine
+    class JobEngine : EssentialJobEngine
     {
         readonly JobClaimer jobClaimer;
         readonly JobRunner jobRunner;
@@ -98,29 +100,29 @@ namespace BusterWood.Serverless
             StdErr.Info($"waiting for next job");
             var job = await jobClaimer.ClaimNext(cancel);
             if (job != null)
-                StdErr.Info($"claimed job {job.Jobid}");
+                StdErr.Info($"claimed job {job}");
             return job;
         }
 
         protected override Task RunJob(JobData job)
         {
-            StdErr.Info($"starting to run job {job.Jobid}");
+            StdErr.Info($"starting to run job {job}");
             return jobRunner.Run(job);
         }
 
         internal override void JobSucceeded(JobData job)
         {
-            StdErr.Info($"job {job.Jobid} finished normally");
+            StdErr.Info($"job {job} finished normally");
             jobPersister.Succeeded(job);
-        }
+`        }
 
         protected override void JobFailed(JobData job, Exception ex)
         {
             job = jobPersister.Failed(job);
             if (job.CanRetry)
-                StdErr.Info($"job {job.Jobid} failed but will be retried, failed with: '{ex.Message}'");
+                StdErr.Info($"job {job} failed but will be retried, failed with: '{ex.Message}'");
             else
-                StdErr.Error($"job {job.Jobid} failed: '{ex}'");
+                StdErr.Error($"job {job} failed: '{ex}'");
         }
 
         protected override void WaitForAllRunningJobsToFinish()
@@ -140,6 +142,7 @@ namespace BusterWood.Serverless
     {
         public bool CanRetry { get; internal set; }
         public Guid Jobid { get; }
+        public override string ToString() => $"{Jobid}"; //TODO: type of job
     }
 
     public interface IJob
