@@ -1,11 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusterWood.Serverless", "BusterWood.Serverless\BusterWood.Serverless.csproj", "{D667684A-D95A-4264-8986-180957B48B2C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld", "HelloWorld\HelloWorld.csproj", "{9EE7C94D-AB4A-4C24-8C41-BD28FA28D8F6}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared.CommandLine", "Shared.CommandLine\Shared.CommandLine.shproj", "{38C64577-4CC5-40C6-965F-3452D8CE9323}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHost", "TestHost\TestHost.csproj", "{3EA308C1-5EEA-4EDF-9EF6-7CAAB590B13E}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Shared.CommandLine\Shared.CommandLine.projitems*{38c64577-4cc5-40c6-965f-3452d8ce9323}*SharedItemsImports = 13
+		Shared.CommandLine\Shared.CommandLine.projitems*{9ee7c94d-ab4a-4c24-8c41-bd28fa28d8f6}*SharedItemsImports = 4
+		Shared.CommandLine\Shared.CommandLine.projitems*{d667684a-d95a-4264-8986-180957b48b2c}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -15,6 +26,14 @@ Global
 		{D667684A-D95A-4264-8986-180957B48B2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D667684A-D95A-4264-8986-180957B48B2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D667684A-D95A-4264-8986-180957B48B2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EE7C94D-AB4A-4C24-8C41-BD28FA28D8F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EE7C94D-AB4A-4C24-8C41-BD28FA28D8F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EE7C94D-AB4A-4C24-8C41-BD28FA28D8F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EE7C94D-AB4A-4C24-8C41-BD28FA28D8F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EA308C1-5EEA-4EDF-9EF6-7CAAB590B13E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EA308C1-5EEA-4EDF-9EF6-7CAAB590B13E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EA308C1-5EEA-4EDF-9EF6-7CAAB590B13E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EA308C1-5EEA-4EDF-9EF6-7CAAB590B13E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

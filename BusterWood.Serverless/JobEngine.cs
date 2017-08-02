@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BusterWood.CommandLine;
+using System;
+using System.IO;
+using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -41,7 +44,7 @@ namespace BusterWood.Serverless
             var cancel = cancelSource.Token;
             while (!cancel.IsCancellationRequested)
             {
-                var job = await ClaimJob(cancel);
+                var job = await RunnableJob(cancel);
                 if (job == null)
                     break; // we have been cancelled
                 var dontWait = TryToRunJob(job);
@@ -51,7 +54,7 @@ namespace BusterWood.Serverless
         /// <summary>
         /// Claim the next job that can be run by this engine
         /// </summary>
-        internal abstract Task<JobData> ClaimJob(CancellationToken cancel);
+        internal abstract Task<JobData> RunnableJob(CancellationToken cancel);
 
         /// <summary>
         /// no need for retrying as it will be handled by the job failing and being re-claimed
@@ -95,54 +98,47 @@ namespace BusterWood.Serverless
             this.jobPersister = jobPersister;
         }
 
-        internal override async Task<JobData> ClaimJob(CancellationToken cancel)
+        internal override async Task<JobData> RunnableJob(CancellationToken cancel)
         {
-            StdErr.Info($"waiting for next job");
-            var job = await jobClaimer.ClaimNext(cancel);
+            Std.LogInfo($"waiting for next job");
+            var job = await jobClaimer.ClaimNextJob(cancel);
             if (job != null)
-                StdErr.Info($"claimed job {job}");
+                Std.LogInfo($"claimed job {job}");
             return job;
         }
 
         protected override Task RunJob(JobData job)
         {
-            StdErr.Info($"starting to run job {job}");
+            Std.LogInfo($"starting to run job {job}");
             return jobRunner.Run(job);
         }
 
         internal override void JobSucceeded(JobData job)
         {
-            StdErr.Info($"job {job} finished normally");
+            Std.LogInfo($"job {job} finished normally");
             jobPersister.Succeeded(job);
-`        }
+        }
 
         protected override void JobFailed(JobData job, Exception ex)
         {
             job = jobPersister.Failed(job);
             if (job.CanRetry)
-                StdErr.Info($"job {job} failed but will be retried, failed with: '{ex.Message}'");
+                Std.LogInfo($"job {job} failed but will be retried, failed with: '{ex.Message}'");
             else
-                StdErr.Error($"job {job} failed: '{ex}'");
+                Std.LogError($"job {job} failed: '{ex}'");
         }
 
         protected override void WaitForAllRunningJobsToFinish()
         {
-            StdErr.Info($"waiting all jobs to finish");
+            Std.LogInfo($"waiting all jobs to finish");
             jobClaimer.WaitForRunningJobsToFinish();
         }
 
         protected override void CleanUpPreviouslyClaimedJobs()
         {
-            StdErr.Info($"Attempting clean up of previously running jobs");
+            Std.LogInfo($"Attempting clean up of previously running jobs");
             jobPersister.CleanUp();
         }
-    }
-
-    class JobData
-    {
-        public bool CanRetry { get; internal set; }
-        public Guid Jobid { get; }
-        public override string ToString() => $"{Jobid}"; //TODO: type of job
     }
 
     public interface IJob

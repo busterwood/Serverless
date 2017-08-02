@@ -2,12 +2,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using BusterWood.Mapper;
+using BusterWood.CommandLine;
 
 namespace BusterWood.Serverless
 {
     abstract class JobClaimer
     {
-        public abstract Task<JobData> ClaimNext(CancellationToken cancel);
+        public abstract Task<JobData> ClaimNextJob(CancellationToken cancel);
 
         public abstract void WaitForRunningJobsToFinish();
     }
@@ -17,7 +18,7 @@ namespace BusterWood.Serverless
         JobPersister jobPersister;
         JobNotifier jobNotifier;
 
-        public override async Task<JobData> ClaimNext(CancellationToken cancel)
+        public override async Task<JobData> ClaimNextJob(CancellationToken cancel)
         {
             for (;;)
             {
@@ -38,7 +39,7 @@ namespace BusterWood.Serverless
                     return;
                 if (running != lastRunning)
                 {
-                    StdErr.Debug($"Waiting for {running} running jobs to finish");
+                    Std.LogVerbose($"Waiting for {running} running jobs to finish");
                     lastRunning = running;
                 }
                 Thread.Sleep(500);
