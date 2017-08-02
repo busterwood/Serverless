@@ -22,30 +22,15 @@ namespace BusterWood.Serverless
         {
             var startTime = DateTime.UtcNow;
             var domain = AppDomain.CreateDomain($"Job {job}");
-            try
-            {
-                await RunJobInDomain(job, domain);
-            }
-            finally
-            {
-                Std.LogInfo($"Unloading AppDomain {domain.FriendlyName}");
-                AppDomain.Unload(domain);
-            }
-            var elapsed = DateTime.UtcNow - startTime;
-            Std.LogInfo($"Job {job} took {elapsed.TotalMilliseconds:N0}MS");
-        }
-
-        private static async Task RunJobInDomain(JobData job, AppDomain domain)
-        {
             using (var pipeIn = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable))
             using (var pipeOut = new AnonymousPipeServerStream(PipeDirection.In, HandleInheritability.Inheritable))
             using (var pipeLog = new AnonymousPipeServerStream(PipeDirection.In, HandleInheritability.Inheritable))
             {
                 var args = new List<string> {
-                    Std.PipeInArg, pipeIn.GetClientHandleAsString(),
-                    Std.PipeOutArg, pipeOut.GetClientHandleAsString(),
-                    Std.PipeLogArg, pipeLog.GetClientHandleAsString()
-                };
+                Std.PipeInArg, pipeIn.GetClientHandleAsString(),
+                Std.PipeOutArg, pipeOut.GetClientHandleAsString(),
+                Std.PipeLogArg, pipeLog.GetClientHandleAsString()
+            };
                 args.AddRange(job.Args);
                 Std.LogInfo($"Starting {job} in new app domain");
                 Task<int> jobTask = Task.Factory.StartNew<int>(() => domain.ExecuteAssemblyByName(job.FullAssemblyName, args.ToArray()), CancellationToken.None, TaskCreationOptions.PreferFairness, TaskScheduler.Default);
@@ -56,14 +41,24 @@ namespace BusterWood.Serverless
 
                 job.ExitCode = await jobTask;
 
+                Std.LogInfo($"{job} finished with exit code {job.ExitCode}");
+
+                Std.LogVerbose($"Unloading AppDomain {domain.FriendlyName}");
+                AppDomain.Unload(domain);
+
                 // only close client handle AFTER the program is complete as it is running in the same process (but different AppDomain)
                 pipeIn.DisposeLocalCopyOfClientHandle();
                 pipeOut.DisposeLocalCopyOfClientHandle();
                 pipeLog.DisposeLocalCopyOfClientHandle();
 
-                Std.LogInfo($"{job} finished with exit code {job.ExitCode}");
                 await Task.WhenAll(readOutput, readLogging); // TODO: wait for input?
             }
+            var elapsed = DateTime.UtcNow - startTime;
+            Std.LogInfo($"Job {job} took {elapsed.TotalMilliseconds:N0}MS");
+        }
+
+        private static async Task RunJobInDomain(JobData job, AppDomain domain)
+        {
         }
     }
 }

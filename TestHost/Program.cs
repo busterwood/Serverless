@@ -15,7 +15,7 @@ namespace TestHost
         {
 
             var runner = new AppDomainJobRunner();
-            for(int i = 0; i < 10; i++)
+            for(int i = 0; i < 1; i++)
             {
                 var job = new JobData
                 {
@@ -28,8 +28,11 @@ namespace TestHost
 
                 var task = runner.Run(job);
                 task.Wait();
+
                 job.Output.Seek(0, SeekOrigin.Begin);
-                job.Output.CopyTo(Console.OpenStandardOutput());
+                var output = new StreamReader(job.Output, Encoding.UTF8, false, 4096, true);
+
+                Console.WriteLine(output.ReadToEnd());
 
             }
 
