@@ -14,6 +14,7 @@ namespace HelloWorld
             var argList = Std.Initialise(args);
             Std.LogInfo("starting");
             Std.Out.WriteLine("hello world");
+            Std.Close();
         }
     }
 }
