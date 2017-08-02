@@ -38,7 +38,7 @@ namespace BusterWood.Serverless
                 };
                 args.AddRange(job.Args);
                 Std.LogInfo($"Starting {job} in new app domain");
-                Task<int> jobTask = Task.Factory.StartNew<int>(() => domain.ExecuteAssemblyByName(job.FullAssemblyName, args.ToArray()), CancellationToken.None, TaskCreationOptions.PreferFairness, TaskScheduler.Default);
+                Task<int> jobTask = Task.Factory.StartNew<int>(() => domain.ExecuteAssemblyByName(job.FullAssemblyName, args.ToArray()), CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
 
                 var writeInput = job.Input.CopyToAsync(pipeIn);
                 var readOutput = pipeOut.CopyToAsync(job.Output);
