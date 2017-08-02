@@ -56,17 +56,24 @@ namespace BusterWood.CommandLine
 
             var pipeIn = argList.StringArg(PipeInArg);
             if (!string.IsNullOrWhiteSpace(pipeIn))
-                In = new StreamReader(new AnonymousPipeClientStream(PipeDirection.In, pipeIn));
+                In = new StreamReader(InProcessPipe.InStream(pipeIn));
 
             var pipeOut = argList.StringArg(PipeOutArg);
             if (!string.IsNullOrWhiteSpace(pipeOut))
-                Out = new StreamWriter(new AnonymousPipeClientStream(PipeDirection.Out, pipeOut)) { AutoFlush = true };
+                Out = new StreamWriter(InProcessPipe.OutStream(pipeOut)) { AutoFlush = true };
 
             var pipeLog = argList.StringArg(PipeLogArg);
             if (!string.IsNullOrWhiteSpace(pipeLog))
-                Log = new StreamWriter(new AnonymousPipeClientStream(PipeDirection.Out, pipeOut)) { AutoFlush = true };
+                Log = new StreamWriter(InProcessPipe.OutStream(pipeLog)) { AutoFlush = true };
 
             return argList;
+        }
+
+        public static void Close()
+        {
+            In.Dispose();
+            Out.Dispose();
+            Log.Dispose();
         }
 
         public static void LogInfo(string message)
