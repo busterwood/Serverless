@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[JobEnd]
+﻿CREATE TABLE [dbo].[JobEnd] -- records a job finishing
 (
 	[JobId] UNIQUEIDENTIFIER NOT NULL, 	
 	[Attempt] INT NOT NULL, 

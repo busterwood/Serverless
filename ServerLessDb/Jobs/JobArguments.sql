@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[JobArguments]
+﻿CREATE TABLE [dbo].[JobArguments] -- zero or more arguments to a job
 (
 	[JobId] UNIQUEIDENTIFIER NOT NULL , 
     [ArgSeq] INT NOT NULL, 

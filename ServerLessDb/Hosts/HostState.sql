@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[HostState]
+﻿CREATE TABLE [dbo].[HostState] -- is a host enabled or disabled?
 (
 	[HostName] NVARCHAR(50) NOT NULL , 
 	[HostStateSeq] int not null identity(1, 1),

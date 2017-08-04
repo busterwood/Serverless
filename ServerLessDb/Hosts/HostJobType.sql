@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[HostJobType]
+﻿CREATE TABLE [dbo].[HostJobType] -- the types of jobs a host can run
 (
 	[HostName] NVARCHAR(50) NOT NULL , 
 	[JobTypeId] INT NOT NULL, -- the host can run this type of job
