@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[JobInputs]
+﻿CREATE TABLE [dbo].[JobInputs] -- inputs to a job - either hard coded or the output of another job
 (
 	[JobId] UNIQUEIDENTIFIER NOT NULL , 	
     [JobInputSeq] INT NOT NULL DEFAULT 0,

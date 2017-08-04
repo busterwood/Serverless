@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[JobStart]
+﻿CREATE TABLE [dbo].[JobStart] -- a job that has started running
 (
 	[JobId] UNIQUEIDENTIFIER NOT NULL, 	
 	[Attempt] INT NOT NULL, 

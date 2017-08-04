@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[Job]
+﻿CREATE TABLE [dbo].[Job] -- a task that can be run
 (
 	[JobId] UNIQUEIDENTIFIER NOT NULL, 
     [JobTypeId] INT NOT NULL, 
