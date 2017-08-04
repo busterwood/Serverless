@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[Host]
+(
+	[HostName] NVARCHAR(50) NOT NULL PRIMARY KEY, 
+    [HostAdded] DATETIMEOFFSET NOT NULL
+)

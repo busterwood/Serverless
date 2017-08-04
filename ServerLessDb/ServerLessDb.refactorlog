@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="a8bcda00-6cf4-41ef-910d-c9b2d1d15acd" ChangeDateTime="08/04/2017 05:32:02">
+    <Property Name="ElementName" Value="[dbo].[JobInputs].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[JobInputs]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="JobId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4823d3c7-ecd3-406f-815c-9475897fb2e3" ChangeDateTime="08/04/2017 05:43:28">
+    <Property Name="ElementName" Value="[dbo].[JobStart].[StartOn]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[JobStart]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="StartHost" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9088e304-bbfc-4e96-a7f5-d3c68916ed82" ChangeDateTime="08/04/2017 06:13:32">
+    <Property Name="ElementName" Value="[dbo].[JobHost].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[JobHost]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="HostName" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="70807059-1469-422d-acdd-6ef48f499749" ChangeDateTime="08/04/2017 07:09:37">
+    <Property Name="ElementName" Value="[dbo].[HostCapability]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[HostJobType]" />
+  </Operation>
+</Operations>
