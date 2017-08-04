@@ -70,6 +70,9 @@
     <Build Include="JobTypes\EnabledJobTypes.sql" />
     <Build Include="JobTypes\JobType.sql" />
     <Build Include="Jobs\Job.sql" />
+    <Build Include="Jobs\FinishedJobs.sql" />
+    <Build Include="Jobs\JobInputDependency.sql" />
+    <Build Include="Jobs\ReadyJobs.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="ServerLessDb.refactorlog" />
@@ -78,7 +81,6 @@
     <Build Include="JobTypes\JobTypeAssembly.sql" />
     <Build Include="JobTypes\JobTypeState.sql" />
     <Build Include="Jobs\JobArguments.sql" />
-    <Build Include="Jobs\JobDependencies.sql" />
     <Build Include="Jobs\JobEnd.sql" />
     <Build Include="Jobs\JobInputs.sql" />
     <Build Include="Jobs\JobStart.sql" />

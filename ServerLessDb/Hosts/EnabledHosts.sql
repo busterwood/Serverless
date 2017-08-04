@@ -1,6 +1,6 @@
-﻿CREATE VIEW [dbo].[EnabledHosts] AS
-WITH LatestState (HostName, HostStateSeq) as (select HostName, max(HostStateSeq) from HostState group by HostName)
+﻿CREATE VIEW [dbo].[EnabledHosts] WITH SCHEMABINDING AS
+WITH LatestState (HostName, HostStateSeq) as (select HostName, max(HostStateSeq) from dbo.HostState group by HostName)
 SELECT hs.HostName
-FROM HostState hs
+FROM dbo.HostState hs
 JOIN LatestState l on l.HostName = hs.HostName AND l.HostStateSeq = hs.HostStateSeq
 WHERE hs.HostEnabled = 1
