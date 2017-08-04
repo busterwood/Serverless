@@ -1,4 +1,4 @@
-﻿CREATE VIEW [dbo].[RunningJobs] AS
+﻿CREATE VIEW [dbo].[RunningJobs] WITH SCHEMABINDING AS
 SELECT s.JobId, s.Attempt, s.HostName, s.StartAt
-FROM JobStart s
-WHERE NOT EXISTS (SELECT * FROM JobEnd e where e.JobId = s.JobId and e.Attempt = s.Attempt)
+FROM dbo.JobStart s
+WHERE NOT EXISTS (SELECT 1 FROM dbo.JobEnd e where e.JobId = s.JobId and e.Attempt = s.Attempt)

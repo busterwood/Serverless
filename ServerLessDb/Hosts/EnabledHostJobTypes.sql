@@ -1,5 +1,5 @@
-﻿CREATE VIEW [dbo].[EnabledHostJobTypes] AS
+﻿CREATE VIEW [dbo].[EnabledHostJobTypes] WITH SCHEMABINDING AS
 SELECT hc.HostName, hc.JobTypeId, hc.HostCapacity
-FROM [HostJobType] hc
-WHERE hc.HostName in (select e.HostName from EnabledHosts e)
-AND hc.JobTypeId in (select e.JobTypeId from EnabledJobTypes e)
+FROM dbo.[HostJobType] hc
+WHERE hc.HostName in (select e.HostName from dbo.EnabledHosts e)
+AND hc.JobTypeId in (select e.JobTypeId from dbo.EnabledJobTypes e)

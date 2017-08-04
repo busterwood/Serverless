@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[JobEnd]
 (
 	[JobId] UNIQUEIDENTIFIER NOT NULL, 	
-	[Attempt] SMALLINT NOT NULL, 
+	[Attempt] INT NOT NULL, 
     [EndAt] DATETIMEOFFSET NOT NULL, 
     [ExitCode] int NOT NULL DEFAULT 0, 
     [Output] NVARCHAR(MAX) NOT NULL DEFAULT '', 
