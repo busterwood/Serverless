@@ -25,7 +25,7 @@ namespace BusterWood.Serverless
                 var job = await jobPersister.TryClaimJob(cancel);
                 if (job != null || cancel.IsCancellationRequested)
                     return job;
-                await jobNotifier.NewJob();
+                await jobNotifier.NewJob(); //TODO: there is race condition between having no work to do and waiting for a new job
             }
         }
 
