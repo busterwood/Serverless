@@ -47,7 +47,7 @@
   <ItemGroup>
     <Compile Include="JobData.cs" />
     <Compile Include="JobEngine.cs" />
-    <Compile Include="JobClaimer.cs" />
+    <Compile Include="JobScheduler.cs" />
     <Compile Include="JobNotifier.cs" />
     <Compile Include="JobPersister.cs" />
     <Compile Include="JobRunner.cs" />

@@ -10,13 +10,25 @@ namespace BusterWood.Serverless
 
         public abstract JobData Failed(JobData job);
 
-        public abstract Task<JobData> TryClaimJob(CancellationToken cancel);
+        public abstract Task<ClaimResult> TryClaimJob(CancellationToken cancel);
 
         public abstract int RunningJobCount();
 
         internal void CleanUp()
         {
             throw new NotImplementedException();
+        }
+    }
+
+    public struct ClaimResult
+    {
+        public JobData Job { get; }
+        public long LastSeenTimestamp { get; }
+
+        public ClaimResult(JobData job, long timestamp)
+        {
+            Job = job;
+            LastSeenTimestamp = timestamp;
         }
     }
 }

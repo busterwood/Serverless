@@ -3,11 +3,8 @@ using System.Threading.Tasks;
 
 namespace BusterWood.Serverless
 {
-    internal class JobNotifier
+    abstract class JobNotifier
     {
-        internal Task NewJob()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract Task WaitForWork(long lastSeenTimestamp);
     }
 }

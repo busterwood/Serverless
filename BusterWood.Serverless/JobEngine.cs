@@ -1,5 +1,6 @@
 ﻿using BusterWood.CommandLine;
 using System;
+using System.Collections;
 using System.IO;
 using System.Security.Policy;
 using System.Threading;
@@ -87,21 +88,25 @@ namespace BusterWood.Serverless
 
     class JobEngine : EssentialJobEngine
     {
-        readonly JobClaimer jobClaimer;
+        readonly TimeSpan shutdownTimeout;
+        readonly JobScheduler jobClaimer;
         readonly JobRunner jobRunner;
         readonly JobPersister jobPersister;
 
-        public JobEngine(JobClaimer jobClaimer, JobRunner jobRunner, JobPersister jobPersister)
+        public JobEngine(JobScheduler jobClaimer, JobRunner jobRunner, JobPersister jobPersister, IDictionary environment = null)
         {
             this.jobClaimer = jobClaimer;
             this.jobRunner = jobRunner;
             this.jobPersister = jobPersister;
+            var env = (environment ?? Environment.GetEnvironmentVariables());
+            if (!TimeSpan.TryParse(env["JOB_HOST_SHUTDOWN_TIMEOUT"]?.ToString() ?? "", out shutdownTimeout))
+                shutdownTimeout = TimeSpan.FromSeconds(30);
         }
 
         internal override async Task<JobData> RunnableJob(CancellationToken cancel)
         {
             Std.LogInfo($"waiting for next job");
-            var job = await jobClaimer.ClaimNextJob(cancel);
+            var job = await jobClaimer.WaitForWork(cancel);
             if (job != null)
                 Std.LogInfo($"claimed job {job}");
             return job;
@@ -131,7 +136,7 @@ namespace BusterWood.Serverless
         protected override void WaitForAllRunningJobsToFinish()
         {
             Std.LogInfo($"waiting all jobs to finish");
-            jobClaimer.WaitForRunningJobsToFinish();
+            jobClaimer.WaitForRunningJobsToFinish(shutdownTimeout);
         }
 
         protected override void CleanUpPreviouslyClaimedJobs()
@@ -146,4 +151,10 @@ namespace BusterWood.Serverless
         //Stream Run(Stream input, TextWriter log);
         Task Run();
     }
+
+    // TODO: move environment access helper to this class
+    //public static class Env
+    //{
+    //    public static TimeSpan TimeSpan(string )
+    //}
 }
