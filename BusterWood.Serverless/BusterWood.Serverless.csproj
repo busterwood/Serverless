@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
     <Compile Include="JobData.cs" />
     <Compile Include="JobEngine.cs" />
     <Compile Include="JobScheduler.cs" />

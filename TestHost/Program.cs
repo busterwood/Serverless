@@ -28,8 +28,8 @@ namespace TestHost
         {
             var job = new JobData
             {
-                Jobid = Guid.NewGuid(),
-                FullAssemblyName = "HelloWorld, version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+                JobId = Guid.NewGuid(),
+                FullPath = "HelloWorld, version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
                 Input = new MemoryStream(),
                 Output = new MemoryStream(),
                 Logging = new MemoryStream(),

@@ -12,7 +12,7 @@ namespace BusterWood.Serverless
     abstract class JobScheduler
     {
         /// <summary>Wait for new work to become available for this host</summary>
-        public abstract Task<JobData> WaitForWork(CancellationToken cancel);
+        public abstract Task<JobStart> WaitForWork(CancellationToken cancel);
 
         /// <summary>Wait for this host to finish all its running jobs.  If the timeout is reached then job will attempt to be terminated</summary>
         /// 
@@ -24,7 +24,7 @@ namespace BusterWood.Serverless
         JobPersister jobPersister;
         JobNotifier jobNotifier;
 
-        public override async Task<JobData> WaitForWork(CancellationToken cancel)
+        public override async Task<JobStart> WaitForWork(CancellationToken cancel)
         {
             for (;;)
             {
